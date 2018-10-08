@@ -319,12 +319,15 @@ while x <= int(y): #specify number of times to run process
 
     htmlElem = browser.find_element_by_name('disasterpurchfood')
     htmlElem.click()
+    ##This sections saves and quits prior to e-sign (Comment out if Running full app)
     htmlElem = browser.find_element_by_name('btnContinue')
     htmlElem.click()
     htmlElem = browser.find_element_by_name('btnQuit')
     htmlElem.click()
     alert = browser.switch_to.alert
     alert.accept()
+    ##End of exit section
+    ##This section completes application (Comment out if stopping early)
     ##htmlElem = browser.find_element_by_name('btnContinue')
     ##htmlElem.click()
     ##htmlElem = browser.find_element_by_name('btnContinue')
@@ -333,6 +336,7 @@ while x <= int(y): #specify number of times to run process
     ##htmlElem.click()
     ##htmlElem = browser.find_element_by_name('btnExit')
     ##htmlElem.click()
+    ##End Of Submit Section.
     browser.quit()
     rn1 = rn1+1
     x = x+1
