@@ -9,6 +9,7 @@ while x <= int(y): #specify number of times to run process
     from selenium.webdriver.common.by import By
     from selenium.webdriver.common.keys import Keys
     from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support.ui import Select
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.common.exceptions import NoSuchElementException
     from selenium.common.exceptions import ElementNotInteractableException
@@ -53,6 +54,9 @@ while x <= int(y): #specify number of times to run process
     col36 = 'AH'+str(rn1)
     col37 = 'AI'+str(rn1)
     col38 = 'AJ'+str(rn1)
+    col39 = 'AK'+str(rn1)
+    col40 = 'AL'+str(rn1)
+    col41 = 'AM'+str(rn1)
     ## Following variables are workbook/sheet cell variables
     fn1 = ws1[col1]     #PIP First Name
     ln1 = ws1[col2]     #PIP Last Name
@@ -87,6 +91,10 @@ while x <= int(y): #specify number of times to run process
     cd1= ws1[col36]
     cd2 = ws1[col37]
     cd3 = ws1[col38]
+    idsel1 = ws1[col39]     #Has FLA ID Choice
+    idsel2 = ws1[col40]     #If Not FLA, type
+    idsel3 = ws1[col41]     #When not FLA, Other ID #
+
     ## Following variables are specific cell values 
     fnv1 = fn1.value
     lnv1 = ln1.value
@@ -172,10 +180,24 @@ while x <= int(y): #specify number of times to run process
     dbpv1 = dbp1.value
     dbpv2 = dbp2.value
     dbpv3 = dbp3.value
+    ctyv1 = cty1.value
     csnv4 = csn4.value
     cdv1 = cd1.value
     cdv2 = cd2.value
     cdv3 = cd3.value
+    idselv1 = idsel1.value
+    if idsel2.value is None or idsel2.value == "":
+        pass
+    else:
+        idselv2 = idsel2.value
+
+
+    if idsel3.value is None or idsel3.value == "":
+        pass
+    else:
+        idselv3 = str(idsel3.value)
+
+
     htmlElem = browser.find_element_by_id('selectprereg')
     htmlElem.click()
     htmlElem = browser.find_element_by_name('btnContinue')
@@ -206,10 +228,65 @@ while x <= int(y): #specify number of times to run process
         htmlElem.send_keys(Keys.DOWN)
 
 
-    htmlElem = browser.find_element_by_id('applicantID')
-    htmlElem.send_keys(dlv1)
-    htmlElem = browser.find_element_by_name('btnContinue')
-    htmlElem.click()
+    htmlElem = browser.find_elements_by_name('idtypeFlag')
+    if idselv1 == 'Y':
+        htmlElem = htmlElem[0].click()
+        htmlElem = browser.find_element_by_id('applicantID')
+        htmlElem.send_keys(dlv1)
+        htmlElem = browser.find_element_by_name('btnContinue')
+        htmlElem.click()
+    else:
+        htmlElem = htmlElem[1].click()
+        htmlElem = browser.find_element_by_name('btnContinue')
+        htmlElem.click()
+        htmlElem = browser.find_element_by_name('btnContinue')
+        htmlElem.click()
+        htmlElem = browser.find_element_by_id('complsecque')
+        if idselv2 == 'Out of State':
+            htmlElem.send_keys(Keys.DOWN)
+
+
+        if idselv2 == 'Passport':
+            htmlElem.send_keys(Keys.DOWN)
+            htmlElem.send_keys(Keys.DOWN)
+
+
+        if idselv2 == 'INS Doc':
+            htmlElem.send_keys(Keys.DOWN)
+            htmlElem.send_keys(Keys.DOWN)
+            htmlElem.send_keys(Keys.DOWN)
+
+
+        if idselv2 == 'School/Work ID':
+            htmlElem.send_keys(Keys.DOWN)
+            htmlElem.send_keys(Keys.DOWN)
+            htmlElem.send_keys(Keys.DOWN)
+            htmlElem.send_keys(Keys.DOWN)
+
+
+        if idselv2 == 'USCIS Card':
+            htmlElem.send_keys(Keys.DOWN)
+            htmlElem.send_keys(Keys.DOWN)
+            htmlElem.send_keys(Keys.DOWN)
+            htmlElem.send_keys(Keys.DOWN)
+            htmlElem.send_keys(Keys.DOWN)
+
+
+        if idselv2 == 'Other':
+            htmlElem.send_keys(Keys.DOWN)
+            htmlElem.send_keys(Keys.DOWN)
+            htmlElem.send_keys(Keys.DOWN)
+            htmlElem.send_keys(Keys.DOWN)
+            htmlElem.send_keys(Keys.DOWN)
+            htmlElem.send_keys(Keys.DOWN)
+
+
+        htmlElem = browser.find_element_by_name('idNumber')
+        htmlElem.send_keys(idselv3)
+        htmlElem = browser.find_element_by_name('btnContinue')
+        htmlElem.click()
+
+
     table_element = browser.find_elements_by_tag_name('b')[-1]
     cellloc = table_element.get_attribute('innerHTML')
     cellloc = int(cellloc)
@@ -232,30 +309,20 @@ while x <= int(y): #specify number of times to run process
     htmlElem = browser.find_element_by_id('disasterStreetSuffixText')
     htmlElem.send_keys(Keys.DOWN)
     htmlElem = browser.find_element_by_id('disasterCityName')
-    htmlElem.send_keys('miami')
+    htmlElem.send_keys(ctv1)
     htmlElem = browser.find_element_by_id('disasterZip5Code')
-    htmlElem.send_keys('34020')
-    htmlElem = browser.find_element_by_id('disasterCountyCode')
-    htmlElem.send_keys(Keys.DOWN)
-    htmlElem.send_keys(Keys.DOWN)
-    htmlElem.send_keys(Keys.DOWN)
-    htmlElem.send_keys(Keys.DOWN)
-    htmlElem.send_keys(Keys.DOWN)
-    htmlElem.send_keys(Keys.DOWN)
-    htmlElem.send_keys(Keys.DOWN)
-    htmlElem.send_keys(Keys.DOWN)
-    htmlElem.send_keys(Keys.DOWN)
-    htmlElem.send_keys(Keys.DOWN)
-    htmlElem.send_keys(Keys.DOWN)
-    htmlElem.send_keys(Keys.DOWN)
-    htmlElem.send_keys(Keys.DOWN)
+    htmlElem.send_keys(zpv1)
+    htmlElem = Select(browser.find_element_by_id('disasterCountyCode'))
+    htmlElem.select_by_value(ctyv1)
     htmlElem = browser.find_element_by_id('disasterid')
+    htmlElem.send_keys(Keys.DOWN)
+    htmlElem.send_keys(Keys.DOWN)
     htmlElem.send_keys(Keys.DOWN)
     htmlElem = browser.find_elements_by_name('applaltaddressflag')[1]
     htmlElem.click()
+    htmlElem = browser.find_elements_by_name('specialNeeds')[1]
+    htmlElem.click();
     htmlElem = browser.find_element_by_name('disasterdamagesw')
-    htmlElem.click()
-    htmlElem = browser.find_element_by_name('btnContinue')
     htmlElem.click()
     htmlElem = browser.find_element_by_name('btnContinue')
     htmlElem.click()
@@ -319,25 +386,21 @@ while x <= int(y): #specify number of times to run process
 
     htmlElem = browser.find_element_by_name('disasterpurchfood')
     htmlElem.click()
-    ##This sections saves and quits prior to e-sign (Comment out if Running full app)
+    #htmlElem = browser.find_element_by_name('btnContinue')
+    #htmlElem.click()
+    #htmlElem = browser.find_element_by_name('btnQuit')
+    #htmlElem.click()
+    #alert = browser.switch_to.alert
+    #alert.accept()
     htmlElem = browser.find_element_by_name('btnContinue')
     htmlElem.click()
-    htmlElem = browser.find_element_by_name('btnQuit')
+    htmlElem = browser.find_element_by_name('btnContinue')
     htmlElem.click()
-    alert = browser.switch_to.alert
-    alert.accept()
-    ##End of exit section
-    ##This section completes application (Comment out if stopping early)
-    ##htmlElem = browser.find_element_by_name('btnContinue')
-    ##htmlElem.click()
-    ##htmlElem = browser.find_element_by_name('btnContinue')
-    ##htmlElem.click()
-    ##htmlElem = browser.find_element_by_name('btnNext')
-    ##htmlElem.click()
-    ##htmlElem = browser.find_element_by_name('btnExit')
-    ##htmlElem.click()
-    ##End Of Submit Section.
+    htmlElem = browser.find_element_by_name('btnNext')
+    htmlElem.click()
+    htmlElem = browser.find_element_by_name('btnExit')
+    htmlElem.click()
     browser.quit()
     rn1 = rn1+1
     x = x+1
-    print(x)
+    print('Next Record: ' + str(x))
